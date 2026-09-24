@@ -78,6 +78,11 @@ export const GenerationCard: React.FC<GenerationCardProps> = ({
             <span className="badge">{generation.size}</span>
             {generation.quality && <span className="badge">{generation.quality}</span>}
             {generation.style && <span className="badge">{generation.style}</span>}
+            {generation.referenceImages && generation.referenceImages.length > 0 && (
+              <span className="badge badge-ref" title="تم إنشاؤها بالاعتماد على صور مرجعية">
+                {generation.referenceImages.length} مرجع
+              </span>
+            )}
           </div>
           <span className="gen-time">{formattedDate}</span>
         </div>

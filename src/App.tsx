@@ -179,6 +179,7 @@ export const App: React.FC = () => {
           style: params.style,
           size: params.size,
           imageUrl: res.url,
+          referenceImages: params.images,
           createdAt: Date.now(),
         };
 

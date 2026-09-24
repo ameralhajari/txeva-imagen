@@ -8,7 +8,15 @@ export type ImageModel =
 
 export type ImageQuality = 'standard' | 'hd' | 'low' | 'medium' | 'high';
 export type ImageStyle = 'vivid' | 'natural';
-export type ImageSize = '1024x1024' | '1792x1024' | '1024x1792' | '512x512' | '256x256';
+export type ImageSize =
+  | '1024x1024'
+  | '1792x1024'
+  | '1024x1792'
+  | '1536x1024'
+  | '1024x1536'
+  | '512x512'
+  | '256x256'
+  | string;
 
 export interface Generation {
   id: string;
@@ -20,6 +28,7 @@ export interface Generation {
   style?: ImageStyle;
   size: ImageSize;
   imageUrl: string;
+  referenceImages?: string[];
   createdAt: number;
 }
 
@@ -51,4 +60,5 @@ export interface GenerationRequestParams {
   style?: ImageStyle;
   size: ImageSize;
   n?: number;
+  images?: string[];
 }

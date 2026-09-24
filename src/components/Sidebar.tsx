@@ -75,12 +75,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         {/* Brand / Logo */}
         <div className="sidebar-brand">
-          <div className="brand-logo">
-            <img src="/logo.png" alt="TXEVA IMAGEN" className="sidebar-brand-img" />
-            <div className="brand-text">
-              <span className="brand-title">TXEVA IMAGEN</span>
-              <span className="brand-subtitle">BUILD YOUR FUTURE</span>
+          <div className="sidebar-brand-top">
+            <div className="brand-logo">
+              <img src="/logo.png" alt="TXEVA IMAGEN" className="sidebar-brand-img" />
+              <div className="brand-text">
+                <span className="brand-title">TXEVA IMAGEN</span>
+                <span className="brand-subtitle">BUILD YOUR FUTURE</span>
+              </div>
             </div>
+            <button className="btn-close-sidebar" onClick={onToggle} aria-label="إغلاق القائمة">
+              <X size={20} />
+            </button>
           </div>
           <button className="btn-new-session" onClick={onNewSession} title="بدء جلسة جديدة">
             <Plus size={18} />
