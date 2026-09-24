@@ -33,29 +33,10 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
       if (res.ok && data.success) {
         onLoginSuccess(data.username || username.trim(), data.token);
       } else {
-        // If server returned 401 or custom error
-        if (res.status === 401 || data.error) {
-          setErrorMessage(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
-        } else {
-          // If offline / local standalone preview without functions
-          const fallbackUser = 'admin';
-          const fallbackPass = 'txeva2026';
-          if (username.trim() === fallbackUser && password.trim() === fallbackPass) {
-            onLoginSuccess(fallbackUser, 'local_token_' + Date.now());
-          } else {
-            setErrorMessage('بيانات الدخول غير صحيحة');
-          }
-        }
+        setErrorMessage(data.error || 'اسم المستخدم أو كلمة المرور غير صحيحة');
       }
     } catch {
-      // Local development fallback
-      const fallbackUser = 'admin';
-      const fallbackPass = 'txeva2026';
-      if (username.trim() === fallbackUser && password.trim() === fallbackPass) {
-        onLoginSuccess(fallbackUser, 'local_token_' + Date.now());
-      } else {
-        setErrorMessage('تعذر الاتصال بخادم المصادقة أو أن البيانات غير صحيحة');
-      }
+      setErrorMessage('تعذر الاتصال بخادم المصادقة. يرجى التأكد من اتصال الإنترنت');
     } finally {
       setIsLoading(false);
     }

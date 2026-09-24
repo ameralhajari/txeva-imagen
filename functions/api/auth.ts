@@ -4,8 +4,17 @@ export async function onRequestPost(context: any) {
     const body = await request.json().catch(() => ({}));
     const { username, password } = body;
 
-    const expectedUser = (env.AUTH_USERNAME || 'admin').trim();
-    const expectedPass = (env.AUTH_PASSWORD || 'txeva2026').trim();
+    const expectedUser = env.AUTH_USERNAME ? String(env.AUTH_USERNAME).trim() : null;
+    const expectedPass = env.AUTH_PASSWORD ? String(env.AUTH_PASSWORD).trim() : null;
+
+    if (!expectedUser || !expectedPass) {
+      return new Response(
+        JSON.stringify({
+          error: 'متغيرات المصادقة (AUTH_USERNAME و AUTH_PASSWORD) لم يتم ضبطها بعد في إعدادات Cloudflare Pages.'
+        }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     if (!username || !password) {
       return new Response(
@@ -14,13 +23,15 @@ export async function onRequestPost(context: any) {
       );
     }
 
-    if (username.trim() === expectedUser && password.trim() === expectedPass) {
-      // Create session token
-      const token = `auth_${btoa(`${expectedUser}:${Date.now()}`)}_${Math.random().toString(36).substring(2)}`;
+    const inputUser = String(username).trim();
+    const inputPass = String(password).trim();
+
+    if (inputUser === expectedUser && inputPass === expectedPass) {
+      const token = `auth_${btoa(`${inputUser}:${Date.now()}`)}_${Math.random().toString(36).substring(2)}`;
       return new Response(
         JSON.stringify({
           success: true,
-          username: expectedUser,
+          username: inputUser,
           token,
         }),
         {
@@ -53,9 +64,11 @@ export async function onRequestGet(context: any) {
     });
   }
 
-  // Token is verified
-  return new Response(JSON.stringify({ authenticated: true, username: env.AUTH_USERNAME || 'admin' }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  });
+  return new Response(
+    JSON.stringify({ authenticated: true, username: env.AUTH_USERNAME || '' }),
+    {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
 }
